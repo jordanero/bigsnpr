@@ -266,6 +266,26 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// ssctpr
+List ssctpr(Environment corr, const arma::vec& beta_hat, const arma::vec& secondary_beta_hat,
+double lambda1, double lambda2, double delta, double dfmax, int maxiter, double tol);
+RcppExport SEXP _bigsnpr_ssctpr(SEXP corrSEXP, SEXP beta_hatSEXP, SEXP secondary_beta_hatSEXP, SEXP lambda1SEXP, SEXP lambda2SEXP, SEXP deltaSEXP, SEXP dfmaxSEXP, SEXP maxiterSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Environment >::type corr(corrSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type beta_hat(beta_hatSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type secondary_beta_hat(secondary_beta_hatSEXP);
+    Rcpp::traits::input_parameter< double >::type lambda1(lambda1SEXP);
+    Rcpp::traits::input_parameter< double >::type lambda2(lambda2SEXP);
+    Rcpp::traits::input_parameter< double >::type delta(deltaSEXP);
+    Rcpp::traits::input_parameter< double >::type dfmax(dfmaxSEXP);
+    Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(ssctpr(corr, beta_hat, secondary_beta_hat, lambda1, lambda2, delta, dfmax, maxiter, tol));
+    return rcpp_result_gen;
+END_RCPP
+}
 // ld_scores
 NumericVector ld_scores(Environment obj, const IntegerVector& rowInd, const IntegerVector& colInd, double size, const NumericVector& pos, int ncores);
 RcppExport SEXP _bigsnpr_ld_scores(SEXP objSEXP, SEXP rowIndSEXP, SEXP colIndSEXP, SEXP sizeSEXP, SEXP posSEXP, SEXP ncoresSEXP) {
@@ -542,6 +562,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigsnpr_corMat", (DL_FUNC) &_bigsnpr_corMat, 8},
     {"_bigsnpr_impute", (DL_FUNC) &_bigsnpr_impute, 3},
     {"_bigsnpr_lassosum2", (DL_FUNC) &_bigsnpr_lassosum2, 7},
+    {"_bigsnpr_ssctpr", (DL_FUNC) &_bigsnpr_ssctpr, 7},
     {"_bigsnpr_ld_scores", (DL_FUNC) &_bigsnpr_ld_scores, 6},
     {"_bigsnpr_ldpred2_gibbs_auto", (DL_FUNC) &_bigsnpr_ldpred2_gibbs_auto, 13},
     {"_bigsnpr_ldpred2_gibbs_one_sampling", (DL_FUNC) &_bigsnpr_ldpred2_gibbs_one_sampling, 10},

@@ -109,6 +109,10 @@ sp_colSumsSq_sym <- function(p, i, x) {
     .Call(`_bigsnpr_sp_colSumsSq_sym`, p, i, x)
 }
 
+ssctpr <- function(corr, beta_hat, secondary_beta_hat, lambda1, lambda2, delta, dfmax, maxiter, tol) {
+    .Call(`_bigsnpr_ssctpr`, corr, beta_hat, secondary_beta_hat, lambda1, lambda2, delta, dfmax, maxiter, tol)
+}
+
 get_L <- function(p, i, x, thr_r2) {
     .Call(`_bigsnpr_get_L`, p, i, x, thr_r2)
 }
