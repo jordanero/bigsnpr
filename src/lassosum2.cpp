@@ -61,7 +61,7 @@ List lassosum2(Environment corr,
       }
     }
 
-    if (gap > gap0) { curr_beta.fill(NA_REAL); break; }
+    //if (gap > gap0) { curr_beta.fill(NA_REAL); break; }
     if (conv || df > dfmax) break;
   }
 

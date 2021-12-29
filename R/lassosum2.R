@@ -26,7 +26,7 @@ snp_lassosum2 <- function(corr, df_beta,
                           delta = signif(seq_log(1e-3, 3, 6), 1),
                           nlambda = 20, lambda.min.ratio = 0.01,
                           dfmax = 200e3, maxiter = 500, tol = 1e-5,
-                          ncores = 1) {
+                          ncores = 1, skip_correlation_adjustment = FALSE) {
 
   assert_df_with_names(df_beta, c("beta", "beta_se", "n_eff"))
   assert_lengths(rows_along(corr), cols_along(corr), rows_along(df_beta))
@@ -37,6 +37,10 @@ snp_lassosum2 <- function(corr, df_beta,
   N <- df_beta$n_eff
   scale <- sqrt(N * df_beta$beta_se^2 + df_beta$beta^2)
   beta_hat <- df_beta$beta / scale
+  if (skip_correlation_adjustment) {
+    beta_hat <- df_beta$beta
+    scale <- 1
+  }
 
   lambda0 <- max(abs(beta_hat))
   seq_lam <- seq_log(lambda0, lambda.min.ratio * lambda0, nlambda + 1)[-1]

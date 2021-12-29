@@ -13,7 +13,8 @@ snp_lassosum2(
   dfmax = 2e+05,
   maxiter = 500,
   tol = 1e-05,
-  ncores = 1
+  ncores = 1,
+  skip_correlation_adjustment = FALSE
 )
 }
 \arguments{

@@ -10,13 +10,17 @@ snp_ssctpr(
   delta = signif(seq_log(0.001, 3, 6), 1),
   nlambda1 = 20,
   lambda1.min.ratio = 0.01,
+  lambda1_max = NULL,
+  include_lambda1_zero = TRUE,
   nlambda2 = 20,
   lambda2.min.ratio = 0.01,
   lambda2_max = 0.001,
+  include_lambda2_zero = TRUE,
   dfmax = 2e+05,
   maxiter = 500,
   tol = 1e-05,
-  ncores = 1
+  ncores = 1,
+  logfile = ""
 )
 }
 \arguments{
@@ -38,6 +42,8 @@ Default is \code{20}.}
 
 \item{lambda1.min.ratio}{Ratio between last and first lambda1 to try.
 Default is \code{0.01}.}
+
+\item{lambda1_max}{Max lambda1 parameter to try.}
 
 \item{nlambda2}{Number of different lambda2s to try (L1-regularization).
 Default is \code{20}.}
