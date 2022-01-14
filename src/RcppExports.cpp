@@ -255,8 +255,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // lassosum2
-List lassosum2(Environment corr, const arma::vec& beta_hat, double lambda, double delta, double dfmax, int maxiter, double tol);
-RcppExport SEXP _bigsnpr_lassosum2(SEXP corrSEXP, SEXP beta_hatSEXP, SEXP lambdaSEXP, SEXP deltaSEXP, SEXP dfmaxSEXP, SEXP maxiterSEXP, SEXP tolSEXP) {
+List lassosum2(Environment corr, const arma::vec& beta_hat, double lambda, double delta, double dfmax, int maxiter, bool check_divergence, double tol);
+RcppExport SEXP _bigsnpr_lassosum2(SEXP corrSEXP, SEXP beta_hatSEXP, SEXP lambdaSEXP, SEXP deltaSEXP, SEXP dfmaxSEXP, SEXP maxiterSEXP, SEXP check_divergenceSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -266,8 +266,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type delta(deltaSEXP);
     Rcpp::traits::input_parameter< double >::type dfmax(dfmaxSEXP);
     Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
+    Rcpp::traits::input_parameter< bool >::type check_divergence(check_divergenceSEXP);
     Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
-    rcpp_result_gen = Rcpp::wrap(lassosum2(corr, beta_hat, lambda, delta, dfmax, maxiter, tol));
+    rcpp_result_gen = Rcpp::wrap(lassosum2(corr, beta_hat, lambda, delta, dfmax, maxiter, check_divergence, tol));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -505,8 +506,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // ssctpr
-List ssctpr(Environment corr, const arma::vec& beta_hat, const arma::vec& secondary_beta_hat, double lambda1, double lambda2, double delta, double dfmax, int maxiter, double tol, std::string logfile);
-RcppExport SEXP _bigsnpr_ssctpr(SEXP corrSEXP, SEXP beta_hatSEXP, SEXP secondary_beta_hatSEXP, SEXP lambda1SEXP, SEXP lambda2SEXP, SEXP deltaSEXP, SEXP dfmaxSEXP, SEXP maxiterSEXP, SEXP tolSEXP, SEXP logfileSEXP) {
+List ssctpr(Environment corr, const arma::vec& beta_hat, const arma::vec& secondary_beta_hat, double lambda1, double lambda2, double delta, double dfmax, int maxiter, double tol, bool check_divergence, std::string logfile);
+RcppExport SEXP _bigsnpr_ssctpr(SEXP corrSEXP, SEXP beta_hatSEXP, SEXP secondary_beta_hatSEXP, SEXP lambda1SEXP, SEXP lambda2SEXP, SEXP deltaSEXP, SEXP dfmaxSEXP, SEXP maxiterSEXP, SEXP tolSEXP, SEXP check_divergenceSEXP, SEXP logfileSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -519,8 +520,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type dfmax(dfmaxSEXP);
     Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
     Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< bool >::type check_divergence(check_divergenceSEXP);
     Rcpp::traits::input_parameter< std::string >::type logfile(logfileSEXP);
-    rcpp_result_gen = Rcpp::wrap(ssctpr(corr, beta_hat, secondary_beta_hat, lambda1, lambda2, delta, dfmax, maxiter, tol, logfile));
+    rcpp_result_gen = Rcpp::wrap(ssctpr(corr, beta_hat, secondary_beta_hat, lambda1, lambda2, delta, dfmax, maxiter, tol, check_divergence, logfile));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -566,7 +568,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigsnpr_replaceSNP", (DL_FUNC) &_bigsnpr_replaceSNP, 4},
     {"_bigsnpr_corMat", (DL_FUNC) &_bigsnpr_corMat, 8},
     {"_bigsnpr_impute", (DL_FUNC) &_bigsnpr_impute, 3},
-    {"_bigsnpr_lassosum2", (DL_FUNC) &_bigsnpr_lassosum2, 7},
+    {"_bigsnpr_lassosum2", (DL_FUNC) &_bigsnpr_lassosum2, 8},
     {"_bigsnpr_ld_scores", (DL_FUNC) &_bigsnpr_ld_scores, 6},
     {"_bigsnpr_ldpred2_gibbs_auto", (DL_FUNC) &_bigsnpr_ldpred2_gibbs_auto, 13},
     {"_bigsnpr_ldpred2_gibbs_one_sampling", (DL_FUNC) &_bigsnpr_ldpred2_gibbs_one_sampling, 10},
@@ -581,7 +583,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bigsnpr_get_L", (DL_FUNC) &_bigsnpr_get_L, 4},
     {"_bigsnpr_get_C", (DL_FUNC) &_bigsnpr_get_C, 4},
     {"_bigsnpr_get_perc", (DL_FUNC) &_bigsnpr_get_perc, 3},
-    {"_bigsnpr_ssctpr", (DL_FUNC) &_bigsnpr_ssctpr, 10},
+    {"_bigsnpr_ssctpr", (DL_FUNC) &_bigsnpr_ssctpr, 11},
     {"_bigsnpr_writebina", (DL_FUNC) &_bigsnpr_writebina, 5},
     {"_bigsnpr_testWrite", (DL_FUNC) &_bigsnpr_testWrite, 2},
     {NULL, NULL, 0}

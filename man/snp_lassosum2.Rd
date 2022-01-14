@@ -14,6 +14,7 @@ snp_lassosum2(
   maxiter = 500,
   tol = 1e-05,
   ncores = 1,
+  check_divergence = TRUE,
   skip_correlation_adjustment = FALSE
 )
 }

@@ -32,6 +32,7 @@ List ssctpr(Environment corr,
                double dfmax,
                int maxiter,
                double tol,
+	       bool check_divergence,
                std::string logfile	
 ) {
 
@@ -99,7 +100,7 @@ List ssctpr(Environment corr,
       }
     }
 
-    //if (gap > gap0) { curr_beta.fill(NA_REAL); break; }
+    if ((check_divergence) && (gap > gap0)) { curr_beta.fill(NA_REAL); break; }
     if (conv || df > dfmax) break;
     if (logging) {
       myfile << "\n";

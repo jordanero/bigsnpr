@@ -31,7 +31,7 @@ snp_ssctpr <- function(corr, df_beta,
                        delta = signif(seq_log(1e-3, 3, 6), 1),
                        nlambda1 = 20, lambda1.min.ratio = 0.01, lambda1_max = NULL, include_lambda1_zero = TRUE,
                        nlambda2 = 20, lambda2.min.ratio = 0.01, lambda2_max = 1e-3, include_lambda2_zero = TRUE,
-		       dfmax = 200e3, maxiter = 500, 
+		       dfmax = 200e3, maxiter = 500, check_divergence = TRUE,
 		       tol = 1e-5, ncores = 1, logfile = '') {
     
 
@@ -66,6 +66,7 @@ snp_ssctpr <- function(corr, df_beta,
         dfmax              = dfmax,
         maxiter            = maxiter,
         tol                = tol,
+	check_divergence   = check_divergence,
 	logfile            = logfile
       )
     )

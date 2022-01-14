@@ -61,8 +61,8 @@ impute <- function(BM, method, ncores) {
     invisible(.Call(`_bigsnpr_impute`, BM, method, ncores))
 }
 
-lassosum2 <- function(corr, beta_hat, lambda, delta, dfmax, maxiter, tol) {
-    .Call(`_bigsnpr_lassosum2`, corr, beta_hat, lambda, delta, dfmax, maxiter, tol)
+lassosum2 <- function(corr, beta_hat, lambda, delta, dfmax, maxiter, check_divergence, tol) {
+    .Call(`_bigsnpr_lassosum2`, corr, beta_hat, lambda, delta, dfmax, maxiter, check_divergence, tol)
 }
 
 ld_scores <- function(obj, rowInd, colInd, size, pos, ncores) {
@@ -121,8 +121,8 @@ get_perc <- function(p, i, block_num) {
     .Call(`_bigsnpr_get_perc`, p, i, block_num)
 }
 
-ssctpr <- function(corr, beta_hat, secondary_beta_hat, lambda1, lambda2, delta, dfmax, maxiter, tol, logfile) {
-    .Call(`_bigsnpr_ssctpr`, corr, beta_hat, secondary_beta_hat, lambda1, lambda2, delta, dfmax, maxiter, tol, logfile)
+ssctpr <- function(corr, beta_hat, secondary_beta_hat, lambda1, lambda2, delta, dfmax, maxiter, tol, check_divergence, logfile) {
+    .Call(`_bigsnpr_ssctpr`, corr, beta_hat, secondary_beta_hat, lambda1, lambda2, delta, dfmax, maxiter, tol, check_divergence, logfile)
 }
 
 writebina <- function(filename, BM, tab, rowInd, colInd) {

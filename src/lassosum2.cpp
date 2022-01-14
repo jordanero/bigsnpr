@@ -25,6 +25,7 @@ List lassosum2(Environment corr,
                double delta,
                double dfmax,
                int maxiter,
+	       bool check_divergence,
                double tol) {
 
   XPtr<SFBM> sfbm = corr["address"];
@@ -61,7 +62,7 @@ List lassosum2(Environment corr,
       }
     }
 
-    //if (gap > gap0) { curr_beta.fill(NA_REAL); break; }
+    if ((check_divergence) && (gap > gap0)) { curr_beta.fill(NA_REAL); break; }
     if (conv || df > dfmax) break;
   }
 

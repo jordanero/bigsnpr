@@ -18,6 +18,7 @@ snp_ssctpr(
   include_lambda2_zero = TRUE,
   dfmax = 2e+05,
   maxiter = 500,
+  check_divergence = TRUE,
   tol = 1e-05,
   ncores = 1,
   logfile = ""

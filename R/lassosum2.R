@@ -26,7 +26,7 @@ snp_lassosum2 <- function(corr, df_beta,
                           delta = signif(seq_log(1e-3, 3, 6), 1),
                           nlambda = 20, lambda.min.ratio = 0.01,
                           dfmax = 200e3, maxiter = 500, tol = 1e-5,
-                          ncores = 1, skip_correlation_adjustment = FALSE) {
+                          ncores = 1, check_divergence = TRUE, skip_correlation_adjustment = FALSE) {
 
   assert_df_with_names(df_beta, c("beta", "beta_se", "n_eff"))
   assert_lengths(rows_along(corr), cols_along(corr), rows_along(df_beta))
@@ -56,13 +56,14 @@ snp_lassosum2 <- function(corr, df_beta,
     time <- system.time(
       # lassosum2 model
       res <- lassosum2(
-        corr     = corr,
-        beta_hat = beta_hat,
-        lambda   = grid_param$lambda[ic],
-        delta    = grid_param$delta[ic],
-        dfmax    = dfmax,
-        maxiter  = maxiter,
-        tol      = tol
+        corr             = corr,
+        beta_hat         = beta_hat,
+        lambda           = grid_param$lambda[ic],
+        delta            = grid_param$delta[ic],
+        dfmax            = dfmax,
+        maxiter          = maxiter,
+	check_divergence = check_divergence,
+        tol              = tol
       )
     )
 
