@@ -8,14 +8,8 @@ snp_ssctpr(
   corr,
   df_beta,
   delta = signif(seq_log(0.001, 3, 6), 1),
-  nlambda1 = 20,
-  lambda1.min.ratio = 0.01,
-  lambda1_max = NULL,
-  include_lambda1_zero = TRUE,
-  nlambda2 = 20,
-  lambda2.min.ratio = 0.01,
-  lambda2_max = 0.001,
-  include_lambda2_zero = TRUE,
+  lambda1 = c(0.1, 0.5),
+  lambda2 = c(0, 0.1),
   dfmax = 2e+05,
   maxiter = 500,
   check_divergence = TRUE,
@@ -38,21 +32,9 @@ If \code{corr} is a dsCMatrix or a dgCMatrix, you can use \code{as_SFBM(corr)}.}
 
 \item{delta}{Vector of shrinkage parameters to try (L2-regularization).}
 
-\item{nlambda1}{Number of different lambda1s to try (L1-regularization).
-Default is \code{20}.}
+\item{lambda1}{Vector of lasso parameters to try}
 
-\item{lambda1.min.ratio}{Ratio between last and first lambda1 to try.
-Default is \code{0.01}.}
-
-\item{lambda1_max}{Max lambda1 parameter to try.}
-
-\item{nlambda2}{Number of different lambda2s to try (L1-regularization).
-Default is \code{20}.}
-
-\item{lambda2.min.ratio}{Ratio between last and first lambda2 to try.
-Default is \code{0.01}.}
-
-\item{lambda2_max}{Max lambda2 parameter to try.}
+\item{lambda2}{Vector of cross-trait penalty parameters to try}
 
 \item{dfmax}{Maximum number of non-zero effects in the model.
 Default is \code{200e3}.}

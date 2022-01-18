@@ -4,16 +4,8 @@
 #'
 #' @inheritParams snp_ldpred2_grid
 #' @param delta Vector of shrinkage parameters to try (L2-regularization).
-#' @param nlambda1 Number of different lambda1s to try (L1-regularization).
-#'   Default is `20`.
-#' @param lambda1.min.ratio Ratio between last and first lambda1 to try.
-#'   Default is `0.01`.
-#' @param lambda1_max Max lambda1 parameter to try.
-#' @param nlambda2 Number of different lambda2s to try (L1-regularization).
-#'   Default is `20`.
-#' @param lambda2.min.ratio Ratio between last and first lambda2 to try.
-#'   Default is `0.01`.
-#' @param lambda2_max Max lambda2 parameter to try.
+#' @param lambda1 Vector of lasso parameters to try
+#' @param lambda2 Vector of cross-trait penalty parameters to try
 #' @param dfmax Maximum number of non-zero effects in the model.
 #'   Default is `200e3`.
 #' @param maxiter Maximum number of iterations before convergence.
@@ -29,24 +21,13 @@
 #'
 snp_ssctpr <- function(corr, df_beta,
                        delta = signif(seq_log(1e-3, 3, 6), 1),
-                       nlambda1 = 20, lambda1.min.ratio = 0.01, lambda1_max = NULL, include_lambda1_zero = TRUE,
-                       nlambda2 = 20, lambda2.min.ratio = 0.01, lambda2_max = 1e-3, include_lambda2_zero = TRUE,
+		       lambda1 = c(.1, .5),
+		       lambda2 = c(0, .1),
 		       dfmax = 200e3, maxiter = 500, check_divergence = TRUE,
 		       tol = 1e-5, ncores = 1, logfile = '') {
     
 
-  if (is.null(lambda1_max)) {
-    lambda1_max <- max(abs(beta_hat))
-  }
-  seq_lambda1 <- seq_log(lambda1_max, lambda1.min.ratio * lambda1_max, nlambda1)
-  if (include_lambda1_zero) {
-    seq_lambda1 <- c(seq_lambda1, 0)
-  }
-  seq_lambda2 <- seq_log(lambda2_max, lambda2.min.ratio * lambda2_max, nlambda2)
-  if (include_lambda2_zero) {
-    seq_lambda2 <- c(seq_lambda2, 0)
-  }
-  grid_param <- expand.grid(lambda1 = seq_lambda1, lambda2 = seq_lambda2, delta = delta)
+  grid_param <- expand.grid(lambda1 = lambda1, lambda2 = lambda2, delta = delta)
 
   ord <- with(grid_param, order(lambda1 * lambda2 * (1 + delta)))
   inv_ord <- match(seq_along(ord), ord)
