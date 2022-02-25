@@ -44,6 +44,10 @@ List ssctpr(Environment corr,
 
   arma::vec curr_beta(m, arma::fill::zeros), dotprods(m, arma::fill::zeros);
 
+  if (std::abs(beta_hat.max()) < lambda1) {
+    return List::create(_["beta_est"] = curr_beta, _["num_iter"] = 0);
+  }
+
   double one_plus_delta = 1 + delta;
   double gap0 = arma::dot(beta_hat, beta_hat);
 
@@ -62,6 +66,8 @@ List ssctpr(Environment corr,
     bool conv = true;
     double df = 0;
     double gap = 0;
+
+    
 
 
 
