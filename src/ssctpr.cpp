@@ -1,10 +1,12 @@
 /******************************************************************************/
 
+#include <string>
 #include <bigstatsr/arma-strict-R-headers.h>
 #include <bigstatsr/utils.h>
 #include <bigsparser/SFBM.h>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 /******************************************************************************/
 
@@ -34,6 +36,15 @@ double loss_j(double beta_j, double one_plus_delta, double beta_hat_j,
   loss += lambda2 * std::pow(beta_j - secondary_beta_hat_j, 2);
   return (loss);
 }
+
+std::string double_to_string(double dub) {
+  std::ostringstream ss;
+  ss.precision(12);
+  ss << std::fixed << dub;
+  std::string my_string = ss.str();
+  return(my_string);
+}
+
 
 
 /******************************************************************************/
@@ -73,9 +84,11 @@ List ssctpr(Environment corr,
   int k = 0;
 
   bool logging = !logfile.empty();
-  std::ofstream myfile(logfile.c_str(), arma::ios::app);
+  //std::ofstream myfile(logfile.c_str(), arma::ios::app);
+  std::ofstream myfile(logfile.c_str());
   if (logging) {
-    myfile << "k, j, cor, secondary_cor, u_j, beta_hat_old, beta_hat_new, loss\n";
+    loss = lambda2 * arma::sum(arma::pow(curr_beta - secondary_beta_hat, 2));
+    myfile << "k, j, cor, secondary_cor, u_j, beta_hat_old, beta_hat_new, dotprods_j, loss\n";
   }
 
   for (; k < maxiter; k++) {
@@ -93,12 +106,13 @@ List ssctpr(Environment corr,
 
       
       if (logging) {
+
         myfile << std::to_string(k) + ", ";
         myfile << std::to_string(j) + ", ";
-        myfile << std::to_string(beta_hat[j]) + ", ";
-        myfile << std::to_string(secondary_beta_hat[j]) + ", ";
-        myfile << std::to_string(u_j) + ", ";
-        myfile << std::to_string(curr_beta[j]) + ", ";
+        myfile << double_to_string(beta_hat[j]) + ", ";
+        myfile << double_to_string(secondary_beta_hat[j]) + ", ";
+        myfile << double_to_string(u_j) + ", ";
+        myfile << double_to_string(curr_beta[j]) + ", ";
         loss += (-1) * loss_j(curr_beta[j], one_plus_delta, beta_hat[j],
                               dotprods[j], lambda1, lambda2, secondary_beta_hat[j]);
       }
@@ -118,10 +132,11 @@ List ssctpr(Environment corr,
       }
 
       if (logging) {
-        myfile << std::to_string(new_beta_j) + ", ";
+        myfile << double_to_string(new_beta_j) + ", ";
+        myfile << double_to_string(dotprods[j]) + ", ";
         loss += loss_j(curr_beta[j], one_plus_delta, beta_hat[j],
                        dotprods[j], lambda1, lambda2, secondary_beta_hat[j]);
-        myfile << std::to_string(loss);
+        myfile << double_to_string(loss);
 
         myfile << "\n";
       }
