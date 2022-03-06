@@ -37,6 +37,24 @@ double loss_j(double beta_j, double one_plus_delta, double beta_hat_j,
   return (loss);
 }
 
+double likelihood_j(double beta_j, double one_plus_delta, double beta_hat_j, 
+                  double dotprods_j)
+{
+  float loss = std::pow(beta_j,2) * one_plus_delta;
+  loss += (-2) * (beta_j) * beta_hat_j;
+  loss += 2 * beta_j * dotprods_j;
+  loss += (-2) * std::pow(beta_j, 2);
+  return (loss);
+}
+
+double penalty_j(double beta_j, double lambda1, double lambda2,
+	       double secondary_beta_hat_j)
+{
+  float loss = 2 * lambda1 * std::abs(beta_j);
+  loss += lambda2 * std::pow(beta_j - secondary_beta_hat_j, 2);
+  return (loss);
+}
+
 std::string double_to_string(double dub) {
   std::ostringstream ss;
   ss.precision(12);
@@ -77,7 +95,7 @@ List ssctpr(Environment corr,
 
   double one_plus_delta = 1 + delta;
   double gap0 = arma::dot(beta_hat, beta_hat);
-  double loss = 0;
+  double loss = 0, likelihood = 0, penalty = 0;
 
 
   
@@ -88,7 +106,8 @@ List ssctpr(Environment corr,
   std::ofstream myfile(logfile.c_str());
   if (logging) {
     loss = lambda2 * arma::sum(arma::pow(curr_beta - secondary_beta_hat, 2));
-    myfile << "k, j, cor, secondary_cor, u_j, beta_hat_old, beta_hat_new, dotprods_j, loss\n";
+    penalty = loss;
+    myfile << "k, j, cor, secondary_cor, u_j, beta_hat_old, beta_hat_new, dotprods_j, likelihood, penalty, loss\n";
   }
 
   for (; k < maxiter; k++) {
@@ -115,6 +134,9 @@ List ssctpr(Environment corr,
         myfile << double_to_string(curr_beta[j]) + ", ";
         loss += (-1) * loss_j(curr_beta[j], one_plus_delta, beta_hat[j],
                               dotprods[j], lambda1, lambda2, secondary_beta_hat[j]);
+        likelihood += (-1) * likelihood_j(curr_beta[j], one_plus_delta, beta_hat[j],
+                                          dotprods[j]);
+        penalty += (-1) * penalty_j(curr_beta[j], lambda1, lambda2, secondary_beta_hat[j]);
       }
 
       double new_beta_j = ssctpr_update(u_j, lambda1, lambda2, 
@@ -136,6 +158,13 @@ List ssctpr(Environment corr,
         myfile << double_to_string(dotprods[j]) + ", ";
         loss += loss_j(curr_beta[j], one_plus_delta, beta_hat[j],
                        dotprods[j], lambda1, lambda2, secondary_beta_hat[j]);
+        likelihood += likelihood_j(curr_beta[j], one_plus_delta, beta_hat[j],
+                                   dotprods[j]);
+        penalty += penalty_j(curr_beta[j], lambda1, lambda2, secondary_beta_hat[j]);
+
+
+        myfile << double_to_string(likelihood) + ", ";
+        myfile << double_to_string(penalty) + ", ";
         myfile << double_to_string(loss);
 
         myfile << "\n";
