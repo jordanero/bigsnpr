@@ -50,9 +50,9 @@ arma::vec termwise_loss_j(
   arma::vec termwise_loss(5, arma::fill::zeros);
 
   termwise_loss[0] = std::pow(beta_j, 2) ;
-  termwise_loss[0] += (-2) * (beta_j) * beta_hat_j;
   termwise_loss[0] += (-2) * std::pow(beta_j, 2);
-  termwise_loss[1] = 2 * beta_j * dotprods_j;
+  termwise_loss[0] += 2 * beta_j * dotprods_j;
+  termwise_loss[1] = (-2) * (beta_j) * beta_hat_j;
   termwise_loss[2] = std::pow(beta_j, 2) * (one_plus_delta - 1);
   termwise_loss[3] = 2 * lambda1 * std::abs(beta_j);
   termwise_loss[4] = lambda2 * std::pow(beta_j - secondary_beta_hat_j, 2);
