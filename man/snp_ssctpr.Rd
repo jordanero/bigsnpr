@@ -16,7 +16,7 @@ snp_ssctpr(
   tol = 1e-05,
   ncores = 1,
   logfile = "",
-  lassosum = FALSE
+  lasso_sum = FALSE
 )
 }
 \arguments{

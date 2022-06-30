@@ -24,7 +24,7 @@ snp_ssctpr <- function(corr, df_beta,
                        lambda1 = c(.1, .5),
                        lambda2 = c(0, .1),
                        dfmax = 200e3, maxiter = 500, check_divergence = TRUE,
-                       tol = 1e-5, ncores = 1, logfile = '', lassosum = FALSE) {
+                       tol = 1e-5, ncores = 1, logfile = '', lasso_sum = FALSE) {
 
   grid_param <- expand.grid(lambda1 = lambda1, lambda2 = lambda2, delta = delta)
 
@@ -36,7 +36,7 @@ snp_ssctpr <- function(corr, df_beta,
   res_grid <- foreach(ic = ord, .export = "ssctpr") %dopar% {
     
     time <- system.time(
-      if (!lassosum) {
+      if (!lasso_sum) {
         res <- ssctpr(
           corr               = corr,
           beta_hat           = df_beta$cor1,
@@ -51,7 +51,7 @@ snp_ssctpr <- function(corr, df_beta,
           logfile            = logfile
         )
       } else {
-        res <- lassoSum2(
+        res <- lassosum2(
           corr             = corr,
           beta_hat         = df_beta$cor1,
           lambda           = grid_param$lambda1[ic],
