@@ -21,11 +21,10 @@
 #'
 snp_ssctpr <- function(corr, df_beta,
                        delta = signif(seq_log(1e-3, 3, 6), 1),
-		       lambda1 = c(.1, .5),
-		       lambda2 = c(0, .1),
-		       dfmax = 200e3, maxiter = 500, check_divergence = TRUE,
-		       tol = 1e-5, ncores = 1, logfile = '') {
-    
+                       lambda1 = c(.1, .5),
+                       lambda2 = c(0, .1),
+                       dfmax = 200e3, maxiter = 500, check_divergence = TRUE,
+                       tol = 1e-5, ncores = 1, logfile = '', lassosum = FALSE) {
 
   grid_param <- expand.grid(lambda1 = lambda1, lambda2 = lambda2, delta = delta)
 
@@ -37,19 +36,32 @@ snp_ssctpr <- function(corr, df_beta,
   res_grid <- foreach(ic = ord, .export = "ssctpr") %dopar% {
     
     time <- system.time(
-      res <- ssctpr(
-        corr               = corr,
-        beta_hat           = df_beta$cor1,
-	secondary_beta_hat = df_beta$cor2,
-        lambda1            = grid_param$lambda1[ic],
-        lambda2            = grid_param$lambda2[ic],
-        delta              = grid_param$delta[ic],
-        dfmax              = dfmax,
-        maxiter            = maxiter,
-        tol                = tol,
-	check_divergence   = check_divergence,
-	logfile            = logfile
-      )
+      if (!lassosum) {
+        res <- ssctpr(
+          corr               = corr,
+          beta_hat           = df_beta$cor1,
+          secondary_beta_hat = df_beta$cor2,
+          lambda1            = grid_param$lambda1[ic],
+          lambda2            = grid_param$lambda2[ic],
+          delta              = grid_param$delta[ic],
+          dfmax              = dfmax,
+          maxiter            = maxiter,
+          tol                = tol,
+          check_divergence   = check_divergence,
+          logfile            = logfile
+        )
+      } else {
+        res <- lassoSum2(
+          corr             = corr,
+          beta_hat         = df_beta$cor1,
+          lambda           = grid_param$lambda1[ic],
+          delta            = grid_param$delta[ic],
+          dfmax            = dfmax,
+          maxiter          = maxiter,
+          check_divergence = check_divergence,
+          tol              = tol
+        )
+      }
     )
 
     res$time <- time[["elapsed"]]

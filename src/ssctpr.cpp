@@ -38,8 +38,8 @@ double loss_j(double beta_j, double one_plus_delta, double beta_hat_j,
 }
 
 // the first element is \beta^T \tilde{X}^T \tilde{X}\beta
-// the second element is \delta \beta^T \beta
-// the third element is -2\beta^T r
+// the second element is -2\beta^T r
+// the third element is \delta \beta^T \beta
 // the fourth element is 2\lambda ||\beta\\_1^1
 // the fifth element is \lambda_2\sum_t\sum_i(\beta_i - s_{ti})^2
 arma::vec termwise_loss_j(

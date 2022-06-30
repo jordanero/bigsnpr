@@ -15,7 +15,8 @@ snp_ssctpr(
   check_divergence = TRUE,
   tol = 1e-05,
   ncores = 1,
-  logfile = ""
+  logfile = "",
+  lassosum = FALSE
 )
 }
 \arguments{
