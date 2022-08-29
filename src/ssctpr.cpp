@@ -204,7 +204,8 @@ List ssctpr(Environment corr,
     }
 
 
-    if ((k != 0) && (check_divergence) && (gap > gap0)) { 
+    if ((k != 0) && (check_divergence) && (arma::mean(arma::abs(curr_beta)) > 1000)) { 
+    //if ((k != 0) && (check_divergence) && (gap > gap0)) { 
       if (logging) {
         myfile.close();
       }
